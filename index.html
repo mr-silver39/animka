@@ -1,0 +1,1409 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#ffffff">
+<meta name="description" content="АНО СОШ «Росток» — Калининград. Образование, школьная жизнь, новости и информация для родителей.">
+<title>РОСТОК — Школа нового поколения</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --green: #8bc63f;
+  --green-dark: #659b2c;
+  --green-light: #f1f8e9;
+  --ink: #252a22;
+  --muted: #7c8277;
+  --white: #fff;
+  --line: rgba(38,48,29,.10);
+  --shadow: 0 25px 70px rgba(32,45,24,.10);
+  --radius: 22px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: #fff;
+  color: var(--ink);
+  font-family: Manrope, Arial, sans-serif;
+  overflow-x: hidden;
+}
+
+body.menu-open { overflow: hidden; }
+
+a { color: inherit; text-decoration: none; }
+button { font: inherit; }
+img { display: block; width: 100%; }
+
+.container {
+  width: min(1200px, calc(100% - 48px));
+  margin: auto;
+}
+
+/* LOADER */
+
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #fff;
+  display: grid;
+  place-items: center;
+  transition: opacity .7s, visibility .7s;
+}
+
+.loader.done {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.loader-inner { text-align: center; }
+
+.loader-logo {
+  width: 76px;
+  height: 76px;
+  margin: 0 auto 18px;
+  animation: loaderPulse 1.5s infinite ease-in-out;
+}
+
+.loader-line {
+  width: 130px;
+  height: 3px;
+  background: #edf0e9;
+  overflow: hidden;
+  margin: 14px auto;
+}
+
+.loader-line::after {
+  content: "";
+  display: block;
+  width: 45%;
+  height: 100%;
+  background: var(--green);
+  animation: loading 1.1s infinite ease-in-out;
+}
+
+@keyframes loading {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(240%); }
+}
+
+@keyframes loaderPulse {
+  50% { transform: scale(1.09); }
+}
+
+/* BACKGROUND EFFECT */
+
+.background-glow {
+  position: fixed;
+  width: 450px;
+  height: 450px;
+  border-radius: 50%;
+  background: rgba(139,198,63,.08);
+  filter: blur(100px);
+  pointer-events: none;
+  z-index: -1;
+  top: 15%;
+  right: -250px;
+}
+
+/* HEADER */
+
+.header {
+  position: relative;
+  z-index: 100;
+  background: rgba(255,255,255,.93);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--line);
+}
+
+.header-top {
+  padding: 23px 0;
+}
+
+.header-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 17px;
+}
+
+.logo {
+  width: 82px;
+  height: 82px;
+  flex-shrink: 0;
+  transition: transform .5s;
+}
+
+.brand:hover .logo { transform: rotate(-5deg) scale(1.04); }
+
+.brand-text small {
+  display: block;
+  font-size: 10px;
+  line-height: 1.5;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #777;
+  font-weight: 600;
+}
+
+.brand-text strong {
+  display: block;
+  font-size: clamp(32px, 4vw, 47px);
+  line-height: 1.1;
+  font-weight: 500;
+  letter-spacing: -2px;
+}
+
+.brand-text strong span { color: var(--green-dark); }
+
+.header-right {
+  text-align: right;
+  font-size: 12px;
+  line-height: 2;
+  color: #70766c;
+}
+
+.header-right a { transition: color .2s; }
+.header-right a:hover { color: var(--green-dark); }
+
+/* NAV */
+
+.nav-wrap {
+  border-top: 1px solid var(--line);
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 58px;
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  align-items: center;
+  gap: 4px;
+}
+
+.nav-links > li { position: relative; }
+
+.nav-links > li > a {
+  display: block;
+  padding: 19px 12px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #555b51;
+  transition: color .25s;
+}
+
+.nav-links > li > a:hover,
+.nav-links > li > a.active {
+  color: var(--green-dark);
+}
+
+.nav-links > li > a::after {
+  content: "";
+  display: block;
+  width: 0;
+  height: 2px;
+  background: var(--green);
+  transition: width .3s;
+  margin-top: 4px;
+}
+
+.nav-links > li > a:hover::after { width: 100%; }
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 250px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 8px;
+  box-shadow: var(--shadow);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(12px);
+  transition: .25s ease;
+}
+
+.nav-links li:hover .dropdown,
+.nav-links li:focus-within .dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.dropdown a {
+  display: block;
+  padding: 11px 13px;
+  font-size: 12px;
+  border-radius: 7px;
+  color: #62685d;
+}
+
+.dropdown a:hover {
+  background: var(--green-light);
+  color: var(--green-dark);
+}
+
+.access-link {
+  font-size: 10px;
+  color: #777;
+  text-align: center;
+  line-height: 1.5;
+  font-weight: 700;
+}
+
+.menu-toggle {
+  display: none;
+  border: 1px solid var(--line);
+  background: white;
+  border-radius: 10px;
+  padding: 10px 13px;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+/* HERO */
+
+.hero {
+  padding: 35px 0 70px;
+}
+
+.hero-frame {
+  position: relative;
+  min-height: 440px;
+  border-radius: 26px;
+  overflow: hidden;
+  background: #e9eee4;
+  isolation: isolate;
+  box-shadow: var(--shadow);
+}
+
+.hero-frame > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: -2;
+  animation: heroZoom 15s ease-in-out infinite alternate;
+}
+
+@keyframes heroZoom {
+  from { transform: scale(1); }
+  to { transform: scale(1.08); }
+}
+
+.hero-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(15,25,10,.72), rgba(15,25,10,.12) 75%);
+  z-index: -1;
+}
+
+.hero-content {
+  max-width: 620px;
+  padding: 75px 65px;
+  color: white;
+  animation: heroEnter 1s .3s both;
+}
+
+@keyframes heroEnter {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #e5f5d4;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 22px;
+}
+
+.eyebrow::before {
+  content: "";
+  width: 28px;
+  height: 2px;
+  background: var(--green);
+}
+
+.hero h1 {
+  font-family: "Playfair Display", serif;
+  font-size: clamp(43px, 6vw, 70px);
+  line-height: 1.12;
+  font-weight: 500;
+  letter-spacing: -1.5px;
+  margin-bottom: 22px;
+}
+
+.hero p {
+  color: rgba(255,255,255,.86);
+  font-size: 14px;
+  line-height: 1.9;
+  max-width: 460px;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 22px;
+  border-radius: 9px;
+  font-size: 12px;
+  font-weight: 800;
+  transition: transform .25s, background .25s, box-shadow .25s;
+}
+
+.button:hover { transform: translateY(-3px); }
+
+.button-green {
+  background: var(--green);
+  color: #fff;
+  box-shadow: 0 8px 25px rgba(139,198,63,.25);
+}
+
+.button-green:hover { background: var(--green-dark); }
+
+.button-white {
+  border: 1px solid rgba(255,255,255,.55);
+  color: #fff;
+  background: rgba(255,255,255,.08);
+  backdrop-filter: blur(8px);
+}
+
+.button-white:hover { background: rgba(255,255,255,.2); }
+
+/* SECTION */
+
+.section { padding: 85px 0; }
+
+.section-heading {
+  text-align: center;
+  margin-bottom: 43px;
+}
+
+.section-heading .overline {
+  color: var(--green-dark);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.section-heading h2 {
+  font-family: "Playfair Display", serif;
+  font-weight: 500;
+  font-size: clamp(30px, 4vw, 43px);
+  letter-spacing: -.7px;
+}
+
+.section-heading p {
+  color: var(--muted);
+  font-size: 13px;
+  margin-top: 12px;
+}
+
+.heading-line {
+  height: 3px;
+  width: 42px;
+  background: var(--green);
+  margin: 17px auto 0;
+  border-radius: 10px;
+}
+
+/* ABOUT */
+
+.about-section {
+  background: linear-gradient(120deg, #f7faF2, #fff 75%);
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 65px;
+}
+
+.about-photo {
+  position: relative;
+  height: 430px;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+
+.about-photo img {
+  height: 100%;
+  object-fit: cover;
+  transition: transform .7s;
+}
+
+.about-photo:hover img { transform: scale(1.06); }
+
+.about-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(255,255,255,.3);
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.about-copy .overline {
+  color: var(--green-dark);
+  text-transform: uppercase;
+  font-size: 10px;
+  letter-spacing: 2px;
+  font-weight: 800;
+}
+
+.about-copy h2 {
+  font-family: "Playfair Display", serif;
+  font-size: clamp(34px, 4vw, 47px);
+  line-height: 1.2;
+  font-weight: 500;
+  margin: 17px 0 22px;
+}
+
+.about-copy p {
+  color: #74796e;
+  font-size: 13px;
+  line-height: 2;
+  margin-bottom: 14px;
+}
+
+.text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 16px;
+  color: var(--green-dark);
+  font-size: 12px;
+  font-weight: 800;
+  transition: gap .25s;
+}
+
+.text-link:hover { gap: 17px; }
+
+/* CARDS */
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.feature-card {
+  padding: 30px;
+  min-height: 200px;
+  border: 1px solid var(--line);
+  border-radius: 17px;
+  background: #fff;
+  position: relative;
+  overflow: hidden;
+  transition: transform .35s, box-shadow .35s, border-color .35s;
+}
+
+.feature-card::before {
+  content: "";
+  position: absolute;
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  background: var(--green-light);
+  right: -55px;
+  bottom: -65px;
+  transition: transform .5s;
+}
+
+.feature-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow);
+  border-color: rgba(139,198,63,.5);
+}
+
+.feature-card:hover::before { transform: scale(1.5); }
+
+.feature-number {
+  color: var(--green-dark);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  margin-bottom: 22px;
+}
+
+.feature-card h3 {
+  font-family: "Playfair Display", serif;
+  font-weight: 500;
+  font-size: 23px;
+  margin-bottom: 10px;
+}
+
+.feature-card p {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+.feature-card .arrow {
+  position: absolute;
+  right: 25px;
+  top: 25px;
+  color: var(--green-dark);
+  font-size: 20px;
+  transition: transform .3s;
+}
+
+.feature-card:hover .arrow { transform: translate(4px,-4px); }
+
+/* NEWS */
+
+.news-section { background: #fafbf8; }
+
+.news-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.news-card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 17px;
+  overflow: hidden;
+  transition: transform .35s, box-shadow .35s;
+}
+
+.news-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow);
+}
+
+.news-image {
+  height: 250px;
+  overflow: hidden;
+  background: #eef0eb;
+}
+
+.news-image img {
+  height: 100%;
+  object-fit: cover;
+  transition: transform .7s;
+}
+
+.news-card:hover .news-image img { transform: scale(1.06); }
+
+.news-content { padding: 25px; }
+
+.news-date {
+  color: var(--green-dark);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  margin-bottom: 11px;
+}
+
+.news-content h3 {
+  font-family: "Playfair Display", serif;
+  font-weight: 500;
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.news-content p {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.9;
+}
+
+/* GALLERY */
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr 1fr;
+  grid-template-rows: 190px 190px;
+  gap: 13px;
+}
+
+.gallery-item {
+  border-radius: 14px;
+  overflow: hidden;
+  position: relative;
+  background: #eee;
+}
+
+.gallery-item:first-child { grid-row: span 2; }
+
+.gallery-item img {
+  height: 100%;
+  object-fit: cover;
+  transition: transform .6s;
+}
+
+.gallery-item:hover img { transform: scale(1.08); }
+
+.gallery-item::after {
+  content: "СОШ «Росток»";
+  position: absolute;
+  left: 15px;
+  bottom: 15px;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: .3s;
+  text-shadow: 0 2px 8px #000;
+}
+
+.gallery-item:hover::after {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* CONTACTS */
+
+.contacts-section {
+  background: #f6f9f2;
+}
+
+.contacts-panel {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 35px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  box-shadow: 0 15px 45px rgba(32,45,24,.04);
+}
+
+.contact-item {
+  padding: 8px 15px;
+  border-right: 1px solid var(--line);
+}
+
+.contact-item:last-child { border: 0; }
+
+.contact-item span {
+  display: block;
+  color: var(--green-dark);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+}
+
+.contact-item strong {
+  display: block;
+  font-size: 14px;
+  line-height: 1.7;
+  font-weight: 700;
+}
+
+.contact-item a:hover { color: var(--green-dark); }
+
+/* FOOTER */
+
+.footer {
+  background: #252a22;
+  color: white;
+  padding: 55px 0 25px;
+}
+
+.footer-main {
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+  padding-bottom: 35px;
+}
+
+.footer-brand {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+
+.footer-brand span { color: var(--green); }
+
+.footer-description {
+  color: rgba(255,255,255,.55);
+  font-size: 11px;
+  line-height: 1.8;
+  margin-top: 12px;
+  max-width: 330px;
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 22px;
+  align-items: flex-start;
+}
+
+.footer-links a {
+  color: rgba(255,255,255,.7);
+  font-size: 11px;
+  transition: color .2s;
+}
+
+.footer-links a:hover { color: var(--green); }
+
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,.12);
+  padding-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  color: rgba(255,255,255,.45);
+  font-size: 10px;
+}
+
+/* SCROLL REVEAL */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(35px);
+  transition: opacity .8s ease, transform .8s cubic-bezier(.2,.7,.2,1);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-delay-1 { transition-delay: .12s; }
+.reveal-delay-2 { transition-delay: .24s; }
+
+/* FLOATING BUTTON */
+
+.top-button {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  width: 48px;
+  height: 48px;
+  border: none;
+  border-radius: 50%;
+  background: var(--green);
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: 0 8px 25px rgba(139,198,63,.35);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(15px);
+  transition: .3s;
+  z-index: 90;
+}
+
+.top-button.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.top-button:hover {
+  background: var(--green-dark);
+  transform: translateY(-4px);
+}
+
+/* RESPONSIVE */
+
+@media(max-width: 1000px) {
+  .nav-links > li > a { padding: 17px 7px; font-size: 9px; }
+  .access-link { font-size: 9px; }
+  .about-grid { gap: 35px; }
+}
+
+@media(max-width: 760px) {
+  .container { width: calc(100% - 30px); }
+
+  .header-top { padding: 14px 0; }
+
+  .header-main { flex-wrap: wrap; gap: 13px; }
+
+  .logo { width: 58px; height: 58px; }
+
+  .brand { gap: 10px; }
+
+  .brand-text small {
+    font-size: 7px;
+    letter-spacing: .7px;
+  }
+
+  .brand-text strong {
+    font-size: 30px;
+    letter-spacing: -1px;
+  }
+
+  .header-right {
+    width: 100%;
+    text-align: left;
+    padding-left: 68px;
+    font-size: 10px;
+    line-height: 1.7;
+  }
+
+  .nav { min-height: 53px; }
+
+  .menu-toggle { display: block; }
+
+  .access-link { margin-left: auto; }
+
+  .nav-links {
+    display: none;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: min(340px, 88vw);
+    height: 100dvh;
+    overflow-y: auto;
+    background: white;
+    z-index: 500;
+    padding: 75px 20px 25px;
+    box-shadow: -20px 0 60px rgba(0,0,0,.12);
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .nav-links.open { display: flex; }
+
+  .nav-links > li > a {
+    font-size: 13px;
+    padding: 14px 10px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .dropdown {
+    position: static;
+    display: none;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    box-shadow: none;
+    border: 0;
+    width: 100%;
+  }
+
+  .nav-links li.sub-open .dropdown { display: block; }
+
+  .dropdown a { font-size: 12px; }
+
+  .hero { padding: 20px 0 45px; }
+
+  .hero-frame {
+    min-height: 490px;
+    border-radius: 17px;
+  }
+
+  .hero-frame::after {
+    background: linear-gradient(0deg, rgba(15,25,10,.83), rgba(15,25,10,.05));
+  }
+
+  .hero-content {
+    padding: 230px 25px 30px;
+  }
+
+  .hero h1 { font-size: 42px; }
+
+  .hero p { font-size: 12px; }
+
+  .section { padding: 58px 0; }
+
+  .about-grid,
+  .news-grid { grid-template-columns: 1fr; }
+
+  .about-grid { gap: 28px; }
+
+  .about-photo { height: 270px; }
+
+  .cards-grid { grid-template-columns: 1fr; }
+
+  .feature-card { min-height: 160px; }
+
+  .news-image { height: 210px; }
+
+  .gallery-grid {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 190px 140px;
+  }
+
+  .gallery-item:first-child {
+    grid-column: span 2;
+    grid-row: auto;
+  }
+
+  .contacts-panel {
+    grid-template-columns: 1fr;
+    padding: 22px;
+  }
+
+  .contact-item {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+    padding: 14px 0;
+  }
+
+  .contact-item:last-child { border: 0; }
+
+  .footer-main,
+  .footer-bottom {
+    flex-direction: column;
+  }
+
+  .footer-links { gap: 15px; }
+}
+
+@media(prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: .01ms !important;
+  }
+  .reveal { opacity: 1; transform: none; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="loader" id="loader">
+  <div class="loader-inner">
+    <svg class="loader-logo" viewBox="0 0 180 155" aria-hidden="true">
+      <path d="M8 8 L95 18 Q126 5 173 8 L157 140 L92 155 L25 139 Z" fill="#8bc63f"/>
+      <path d="M92 151 C92 105 93 68 145 23 C113 26 91 49 81 78 C70 59 47 52 29 53 C49 69 67 84 82 106 C86 120 87 136 86 151 Z" fill="#fff"/>
+      <path d="M88 99 C81 74 58 59 38 57 C51 79 69 91 88 99 Z" fill="#fff"/>
+      <path d="M94 79 C108 48 128 36 145 28 C139 52 121 70 94 79 Z" fill="#fff"/>
+    </svg>
+    <div style="font-weight:800;letter-spacing:4px;font-size:12px">РОСТОК</div>
+    <div class="loader-line"></div>
+  </div>
+</div>
+
+<div class="background-glow"></div>
+
+<header class="header">
+  <div class="header-top">
+    <div class="container header-main">
+
+      <a class="brand" href="#home">
+        <svg class="logo" viewBox="0 0 180 155" role="img" aria-label="Эмблема Росток">
+          <path d="M8 8 L95 18 Q126 5 173 8 L157 140 L92 155 L25 139 Z" fill="#8bc63f"/>
+          <path d="M92 151 C92 105 93 68 145 23 C113 26 91 49 81 78 C70 59 47 52 29 53 C49 69 67 84 82 106 C86 120 87 136 86 151 Z" fill="#fff"/>
+          <path d="M88 99 C81 74 58 59 38 57 C51 79 69 91 88 99 Z" fill="#fff"/>
+          <path d="M94 79 C108 48 128 36 145 28 C139 52 121 70 94 79 Z" fill="#fff"/>
+        </svg>
+
+        <span class="brand-text">
+          <small>Автономная некоммерческая организация<br>Средняя общеобразовательная школа</small>
+          <strong>«РОСТОК<span>»</span></strong>
+        </span>
+      </a>
+
+      <div class="header-right">
+        <a href="tel:+79114568094">+7-911-456-80-94</a><br>
+        <a href="mailto:rostok@rostok39.ru">rostok@rostok39.ru</a><br>
+        <a href="https://yandex.ru/maps/?text=Калининград%20Озерная%2031а" target="_blank" rel="noopener">г. Калининград, ул. Озерная 31а</a>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="nav-wrap">
+    <div class="container nav">
+
+      <button class="menu-toggle" id="menuToggle" aria-expanded="false">☰ Меню</button>
+
+      <ul class="nav-links" id="navLinks">
+        <li><a class="active" href="#home">Главная</a></li>
+
+        <li>
+          <a href="https://rostok39.ru/information/info-1.html">Сведения об образовательной организации</a>
+          <div class="dropdown">
+            <a href="https://rostok39.ru/information/info-1.html">Основные сведения</a>
+            <a href="https://rostok39.ru/information/info-3.html">Документы</a>
+            <a href="https://rostok39.ru/information/info-4.html">Образование</a>
+          </div>
+        </li>
+
+        <li>
+          <a href="https://rostok39.ru/school/about.html">Наша школа</a>
+          <div class="dropdown">
+            <a href="https://rostok39.ru/school/about.html">О школе</a>
+            <a href="https://rostok39.ru/school/photo-gallery.html">Фотогалерея</a>
+          </div>
+        </li>
+
+        <li><a href="https://rostok39.ru/medpunkt.html">Медпункт</a></li>
+
+        <li><a href="https://rostok39.ru/postuplenie/malishi-nabor-2.html">Поступление в школу</a></li>
+
+        <li>
+          <a href="https://rostok39.ru/info-rod/price.html">Родителям</a>
+          <div class="dropdown">
+            <a href="https://rostok39.ru/info-rod/price.html">Стоимость обучения</a>
+          </div>
+        </li>
+
+        <li><a href="https://rostok39.ru/message.html">Обратная связь</a></li>
+        <li><a href="https://rostok39.ru/contact.html">Контакты</a></li>
+      </ul>
+
+      <a class="access-link" href="https://rostok39.ru/">ВЕРСИЯ ДЛЯ<br>СЛАБОВИДЯЩИХ</a>
+
+    </div>
+  </div>
+</header>
+
+<main id="home">
+
+  <section class="hero container">
+    <div class="hero-frame">
+      <img src="https://www.rostok39.ru/media/widgetkit/ss13-c07d2abee6c37ba4daa81b3fe2a4791a.jpg" alt="Школьная линейка Росток" fetchpriority="high">
+
+      <div class="hero-content">
+        <div class="eyebrow">АНО СОШ «Росток» · Калининград</div>
+        <h1>Место, где<br>растёт будущее.</h1>
+        <p>Образование, развитие и новые возможности. Школа, в которой каждый день становится шагом вперёд.</p>
+        <div class="hero-actions">
+          <a class="button button-green" href="https://rostok39.ru/school/about.html">О нашей школе ↗</a>
+          <a class="button button-white" href="#contacts">Связаться с нами</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section about-section">
+    <div class="container about-grid">
+
+      <div class="about-photo reveal">
+        <img src="https://www.rostok39.ru/media/widgetkit/ss12-9822827458993013b96c5cc8a4cdb7c3.jpg" alt="Ученики школы Росток" loading="lazy">
+      </div>
+
+      <div class="about-copy reveal reveal-delay-1">
+        <div class="overline">Наша философия</div>
+        <h2>Каждый ребёнок — это целый мир.</h2>
+        <p>Школа «Росток» — образовательное пространство, в котором важны знания, личностное развитие и раскрытие способностей каждого ученика.</p>
+        <p>Мы стремимся создавать условия для обучения, общения, творчества и новых открытий.</p>
+        <a class="text-link" href="https://rostok39.ru/school/about.html">Узнать больше о школе <span>→</span></a>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+
+      <div class="section-heading reveal">
+        <div class="overline">Навигация</div>
+        <h2>Всё самое важное</h2>
+        <div class="heading-line"></div>
+        <p>Основные разделы сайта школы</p>
+      </div>
+
+      <div class="cards-grid">
+
+        <a class="feature-card reveal" href="https://rostok39.ru/information/info-1.html">
+          <div class="feature-number">01 / ИНФОРМАЦИЯ</div>
+          <div class="arrow">↗</div>
+          <h3>Сведения о школе</h3>
+          <p>Документы, образовательные программы и официальная информация.</p>
+        </a>
+
+        <a class="feature-card reveal reveal-delay-1" href="https://rostok39.ru/school/about.html">
+          <div class="feature-number">02 / ЗНАКОМСТВО</div>
+          <div class="arrow">↗</div>
+          <h3>Наша школа</h3>
+          <p>История, школьная жизнь, традиции и фотогалерея.</p>
+        </a>
+
+        <a class="feature-card reveal reveal-delay-2" href="https://rostok39.ru/medpunkt.html">
+          <div class="feature-number">03 / ЗДОРОВЬЕ</div>
+          <div class="arrow">↗</div>
+          <h3>Медицинский пункт</h3>
+          <p>Информация о медицинском сопровождении учащихся.</p>
+        </a>
+
+        <a class="feature-card reveal" href="https://rostok39.ru/postuplenie/malishi-nabor-2.html">
+          <div class="feature-number">04 / ПОСТУПЛЕНИЕ</div>
+          <div class="arrow">↗</div>
+          <h3>Будущим ученикам</h3>
+          <p>Информация для тех, кто хочет стать частью школы.</p>
+        </a>
+
+        <a class="feature-card reveal reveal-delay-1" href="https://rostok39.ru/info-rod/price.html">
+          <div class="feature-number">05 / РОДИТЕЛЯМ</div>
+          <div class="arrow">↗</div>
+          <h3>Родителям</h3>
+          <p>Стоимость обучения и полезная информация.</p>
+        </a>
+
+        <a class="feature-card reveal reveal-delay-2" href="https://rostok39.ru/message.html">
+          <div class="feature-number">06 / ОБЩЕНИЕ</div>
+          <div class="arrow">↗</div>
+          <h3>Обратная связь</h3>
+          <p>Возможность связаться с администрацией школы.</p>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="section news-section">
+    <div class="container">
+
+      <div class="section-heading reveal">
+        <div class="overline">Школьная жизнь</div>
+        <h2>Новости и события</h2>
+        <div class="heading-line"></div>
+        <p>События и важная информация</p>
+      </div>
+
+      <div class="news-grid">
+
+        <article class="news-card reveal">
+          <div class="news-image">
+            <img src="https://www.rostok39.ru/media/widgetkit/ss13-c07d2abee6c37ba4daa81b3fe2a4791a.jpg" alt="Школьная линейка" loading="lazy">
+          </div>
+          <div class="news-content">
+            <div class="news-date">ШКОЛЬНАЯ ЖИЗНЬ</div>
+            <h3>Торжественные школьные мероприятия</h3>
+            <p>Фотографии и события из жизни учеников, учителей и всей школьной семьи.</p>
+            <a class="text-link" href="https://rostok39.ru/school/photo-gallery.html">Посмотреть галерею →</a>
+          </div>
+        </article>
+
+        <article class="news-card reveal reveal-delay-1">
+          <div class="news-image">
+            <img src="https://www.rostok39.ru/media/widgetkit/ss001-e0e5e27c676417b50cd3fa20b0f30269.jpg" alt="Школьное мероприятие" loading="lazy">
+          </div>
+          <div class="news-content">
+            <div class="news-date">ДЛЯ БУДУЩИХ УЧЕНИКОВ</div>
+            <h3>Поступление и подготовка к школе</h3>
+            <p>Ознакомьтесь с информацией о поступлении и направлениях подготовки.</p>
+            <a class="text-link" href="https://rostok39.ru/postuplenie/malishi-nabor-2.html">Подробнее →</a>
+          </div>
+        </article>
+
+      </div>
+
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+
+      <div class="section-heading reveal">
+        <div class="overline">Наши моменты</div>
+        <h2>Жизнь «Ростка»</h2>
+        <div class="heading-line"></div>
+        <p>Школьные события в фотографиях</p>
+      </div>
+
+      <div class="gallery-grid reveal">
+        <a class="gallery-item" href="https://rostok39.ru/school/photo-gallery.html">
+          <img src="https://www.rostok39.ru/media/widgetkit/ss13-c07d2abee6c37ba4daa81b3fe2a4791a.jpg" alt="Школьная линейка" loading="lazy">
+        </a>
+        <a class="gallery-item" href="https://rostok39.ru/school/photo-gallery.html">
+          <img src="https://www.rostok39.ru/media/widgetkit/ss12-9822827458993013b96c5cc8a4cdb7c3.jpg" alt="Ученики" loading="lazy">
+        </a>
+        <a class="gallery-item" href="https://rostok39.ru/school/photo-gallery.html">
+          <img src="https://www.rostok39.ru/media/widgetkit/ss001-e0e5e27c676417b50cd3fa20b0f30269.jpg" alt="Школьное событие" loading="lazy">
+        </a>
+      </div>
+
+      <div style="text-align:center;margin-top:28px" class="reveal">
+        <a class="button button-green" href="https://rostok39.ru/school/photo-gallery.html">Вся фотогалерея ↗</a>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="section contacts-section" id="contacts">
+    <div class="container">
+
+      <div class="section-heading reveal">
+        <div class="overline">Мы на связи</div>
+        <h2>Контактная информация</h2>
+        <div class="heading-line"></div>
+        <p>Будем рады вашему обращению</p>
+      </div>
+
+      <div class="contacts-panel reveal">
+
+        <div class="contact-item">
+          <span>АДРЕС</span>
+          <strong>г. Калининград,<br>ул. Озерная, 31а</strong>
+        </div>
+
+        <div class="contact-item">
+          <span>ТЕЛЕФОН</span>
+          <strong><a href="tel:+79114568094">+7-911-456-80-94</a></strong>
+        </div>
+
+        <div class="contact-item">
+          <span>ЭЛЕКТРОННАЯ ПОЧТА</span>
+          <strong><a href="mailto:rostok@rostok39.ru">rostok@rostok39.ru</a></strong>
+        </div>
+
+      </div>
+
+      <div style="text-align:center;margin-top:28px" class="reveal">
+        <a class="button button-green" href="https://rostok39.ru/contact.html">Все контакты ↗</a>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="container">
+
+    <div class="footer-main">
+      <div>
+        <div class="footer-brand">«РОСТО<span>К</span>»</div>
+        <div class="footer-description">
+          Автономная некоммерческая организация<br>
+          Средняя общеобразовательная школа<br>
+          Калининград
+        </div>
+      </div>
+
+      <div class="footer-links">
+        <a href="https://rostok39.ru/">Официальный сайт</a>
+        <a href="https://rostok39.ru/information/info-1.html">Сведения о школе</a>
+        <a href="https://rostok39.ru/school/about.html">Наша школа</a>
+        <a href="https://rostok39.ru/contact.html">Контакты</a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>СОШ «Росток» · Калининград</span>
+      <span>Демонстрационная версия обновлённого сайта</span>
+    </div>
+
+  </div>
+</footer>
+
+<button class="top-button" id="topButton" aria-label="Наверх">↑</button>
+
+<script>
+// Загрузка страницы
+window.addEventListener("load", () => {
+  setTimeout(() => {
+    document.getElementById("loader").classList.add("done");
+  }, 500);
+});
+
+// Мобильная навигация
+const menuToggle = document.getElementById("menuToggle");
+const navLinks = document.getElementById("navLinks");
+
+menuToggle.addEventListener("click", () => {
+  const opened = navLinks.classList.toggle("open");
+  document.body.classList.toggle("menu-open", opened);
+  menuToggle.setAttribute("aria-expanded", opened);
+  menuToggle.textContent = opened ? "✕ Закрыть" : "☰ Меню";
+});
+
+// Подменю на телефоне
+navLinks.querySelectorAll(":scope > li").forEach(item => {
+  const link = item.querySelector(":scope > a");
+  const dropdown = item.querySelector(".dropdown");
+
+  if (!dropdown) return;
+
+  link.addEventListener("click", event => {
+    if (window.innerWidth <= 760) {
+      event.preventDefault();
+      item.classList.toggle("sub-open");
+    }
+  });
+});
+
+// Закрываем меню после выбора ссылки
+navLinks.querySelectorAll("a").forEach(link => {
+  link.addEventListener("click", () => {
+    if (window.innerWidth <= 760 && !link.parentElement.querySelector(".dropdown")) {
+      navLinks.classList.remove("open");
+      document.body.classList.remove("menu-open");
+      menuToggle.textContent = "☰ Меню";
+      menuToggle.setAttribute("aria-expanded", "false");
+    }
+  });
+});
+
+// Появление секций
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add("visible");
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll(".reveal").forEach(el => observer.observe(el));
+
+// Кнопка наверх
+const topButton = document.getElementById("topButton");
+
+window.addEventListener("scroll", () => {
+  topButton.classList.toggle("show", window.scrollY > 500);
+});
+
+topButton.addEventListener("click", () => {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
+
+// Плавная прокрутка к разделам
+document.querySelectorAll('a[href^="#"]').forEach(link => {
+  link.addEventListener("click", event => {
+    const target = document.querySelector(link.getAttribute("href"));
+    if (!target) return;
+    event.preventDefault();
+    target.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+});
+</script>
+
+</body>
+</html>
